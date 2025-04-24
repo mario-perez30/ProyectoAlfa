@@ -98,7 +98,7 @@ public class DAOFile implements IDAO {
         fw = new FileWriter(Routes.FILE.getDataFile(), true);
         bw = new BufferedWriter(fw);
         if (p.getDateOfBirth() != null) {
-            DateFormat dateFormat = new SimpleDateFormat("yyy/MM/dd");
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
             String dateAsString = dateFormat.format(p.getDateOfBirth());
             bw.write(p.getName() + "\t" + p.getNif() + "\t" + dateAsString + "\t");
         } else {

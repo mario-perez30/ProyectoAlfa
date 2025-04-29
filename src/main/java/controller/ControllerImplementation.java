@@ -17,6 +17,7 @@ import view.Menu;
 import view.Read;
 import view.ReadAll;
 import view.Update;
+import view.Count;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -58,6 +59,7 @@ public class ControllerImplementation implements IController, ActionListener {
     private Delete delete;
     private Update update;
     private ReadAll readAll;
+    private Count count;
 
     /**
      * This constructor allows the controller to know which data storage option
@@ -91,6 +93,10 @@ public class ControllerImplementation implements IController, ActionListener {
         
         if (e.getSource() == dSS.getAccept()[0]) {
             handleDataStorageSelection();
+        }else if (e.getSource() == menu.getCount()) {
+            
+            handleCount();
+            
         } else if (e.getSource() == menu.getInsert()) {
             handleInsertAction();
             
@@ -231,6 +237,8 @@ public class ControllerImplementation implements IController, ActionListener {
         menu.getDelete().addActionListener(this);
         menu.getReadAll().addActionListener(this);
         menu.getDeleteAll().addActionListener(this);
+        menu.getCount().addActionListener(this);
+        
     }
 
     private void handleInsertAction() {
@@ -341,7 +349,36 @@ public class ControllerImplementation implements IController, ActionListener {
             update.getReset().doClick();
         }
     }
-
+    
+    public void handleCount() {
+        
+            
+        try {
+            count();
+        } catch (Exception ex) {
+            if (ex instanceof FileNotFoundException || ex instanceof IOException
+                    || ex instanceof ParseException || ex instanceof ClassNotFoundException
+                    || ex instanceof SQLException || ex instanceof PersistenceException) {
+                JOptionPane.showMessageDialog(menu, ex.getMessage() + " Closing application.", "Delete All - People v1.1.0", JOptionPane.ERROR_MESSAGE);
+                System.exit(0);
+            }
+        }
+    }
+    public void count(){
+        
+        ArrayList<Person> s = readAll();
+        int quantity = s.size();
+        if (!s.isEmpty()) {
+            
+            count = new Count(menu, true,quantity);
+            count.setVisible(true);
+        } else {
+            
+            JOptionPane.showMessageDialog(menu, "There are no people registered yet.", "Read All - People v1.1.0", JOptionPane.WARNING_MESSAGE);
+            
+        }
+    }
+    
     public void handleReadAll() {
         ArrayList<Person> s = readAll();
         if (s.isEmpty()) {
@@ -386,6 +423,8 @@ public class ControllerImplementation implements IController, ActionListener {
             deleteAll();
         }
     }
+    
+    
     
     /**
      * This function inserts the Person object with the requested NIF, if it

@@ -88,31 +88,45 @@ public class ControllerImplementation implements IController, ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
+        
         if (e.getSource() == dSS.getAccept()[0]) {
             handleDataStorageSelection();
         } else if (e.getSource() == menu.getInsert()) {
             handleInsertAction();
+            
         } else if (insert != null && e.getSource() == insert.getInsert()) {
             handleInsertPerson();
+            
         } else if (e.getSource() == menu.getRead()) {
             handleReadAction();
+            
         } else if (read != null && e.getSource() == read.getRead()) {
             handleReadPerson();
+            
         } else if (e.getSource() == menu.getDelete()) {
             handleDeleteAction();
+            
         } else if (delete != null && e.getSource() == delete.getDelete()) {
             handleDeletePerson();
+            
         } else if (e.getSource() == menu.getUpdate()) {
             handleUpdateAction();
+            
         } else if (update != null && e.getSource() == update.getRead()) {
             handleReadForUpdate();
+            
         } else if (update != null && e.getSource() == update.getUpdate()) {
             handleUpdatePerson();
+            
         } else if (e.getSource() == menu.getReadAll()) {
             handleReadAll();
+            
         } else if (e.getSource() == menu.getDeleteAll()) {
             handleDeleteAll();
+            
         }
+        
+        
     }
 
     private void handleDataStorageSelection() {
@@ -385,6 +399,7 @@ public class ControllerImplementation implements IController, ActionListener {
         try {
             if (dao.read(p) == null) {
                 dao.insert(p);
+                JOptionPane.showMessageDialog(insert, "Person inserted successfully!");
             } else {
                 throw new PersonException(p.getNif() + " is registered and can not "
                         + "be INSERTED.");

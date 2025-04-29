@@ -89,6 +89,11 @@ public class Insert extends javax.swing.JDialog {
         insert.setMaximumSize(new java.awt.Dimension(187, 33));
         insert.setMinimumSize(new java.awt.Dimension(187, 33));
         insert.setPreferredSize(new java.awt.Dimension(187, 33));
+        insert.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                insertActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 3;
@@ -232,9 +237,15 @@ public class Insert extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(12, 24, 12, 24);
         getContentPane().add(jLabel2, gridBagConstraints);
 
+        dateOfBirth.setDebugGraphicsOptions(javax.swing.DebugGraphics.NONE_OPTION);
         dateOfBirth.setMaximumSize(new java.awt.Dimension(350, 22));
         dateOfBirth.setMinimumSize(new java.awt.Dimension(350, 22));
         dateOfBirth.setPreferredSize(new java.awt.Dimension(350, 22));
+        dateOfBirth.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dateOfBirthActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
@@ -314,6 +325,14 @@ public class Insert extends javax.swing.JDialog {
             showInsert();
         }
     }//GEN-LAST:event_nifKeyPressed
+
+    private void dateOfBirthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dateOfBirthActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_dateOfBirthActionPerformed
+
+    private void insertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertActionPerformed
+        
+    }//GEN-LAST:event_insertActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private org.jdatepicker.JDatePicker dateOfBirth;

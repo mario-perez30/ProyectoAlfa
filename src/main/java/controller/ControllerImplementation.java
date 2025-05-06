@@ -32,6 +32,8 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.persistence.*;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -204,6 +206,7 @@ public class ControllerImplementation implements IController, ActionListener {
                         + "nif varchar(9) primary key not null, "
                         + "name varchar(50), "
                         + "dateOfBirth DATE, "
+                        + "phoneNumber varchar(50), "
                         + "photo varchar(200) );");
                 stmt.close();
                 conn.close();
@@ -248,15 +251,26 @@ public class ControllerImplementation implements IController, ActionListener {
     }
 
     private void handleInsertPerson() {
-        Person p = new Person(insert.getNam().getText(), insert.getNif().getText());
-        if (insert.getDateOfBirth().getModel().getValue() != null) {
+        Pattern pattern = Pattern.compile("^\\+?[0-9]{1,4}?[-.\\s]?\\(?\\d{1,3}\\)?[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,9}$", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(insert.getphoneNumber().getText());
+        
+        boolean matchFound=matcher.find();
+        
+        if(matchFound){
+            
+            Person p = new Person(insert.getNam().getText(), insert.getNif().getText(), insert.getphoneNumber().getText());
+            if (insert.getDateOfBirth().getModel().getValue() != null) {
             p.setDateOfBirth(((GregorianCalendar) insert.getDateOfBirth().getModel().getValue()).getTime());
-        }
-        if (insert.getPhoto().getIcon() != null) {
+            }   
+            if (insert.getPhoto().getIcon() != null) {
             p.setPhoto((ImageIcon) insert.getPhoto().getIcon());
+            }
+            insert(p);
+            insert.getReset().doClick();
+        }else{
+            JOptionPane.showMessageDialog(insert, "Phone Number not valid. Valid formats: +34 123 456 789, +1-800-555-1234, (123) 456-7890, 123.456.7890 and 123456789.");
         }
-        insert(p);
-        insert.getReset().doClick();
+        
     }
 
     private void handleReadAction() {
@@ -276,6 +290,7 @@ public class ControllerImplementation implements IController, ActionListener {
                 DateModel<Calendar> dateModel = (DateModel<Calendar>) read.getDateOfBirth().getModel();
                 dateModel.setValue(calendar);
             }
+            read.getPhoneNumber().setText(pNew.getPhoneNumber());
             //To avoid charging former images
             if (pNew.getPhoto() != null) {
                 pNew.getPhoto().getImage().flush();
@@ -315,9 +330,11 @@ public class ControllerImplementation implements IController, ActionListener {
             if (pNew != null) {
                 update.getNam().setEnabled(true);
                 update.getDateOfBirth().setEnabled(true);
+                update.getPhoneNumber().setEnabled(true);
                 update.getPhoto().setEnabled(true);
                 update.getUpdate().setEnabled(true);
                 update.getNam().setText(pNew.getName());
+                update.getPhoneNumber().setText(pNew.getPhoneNumber());
                 if (pNew.getDateOfBirth() != null) {
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTime(pNew.getDateOfBirth());
@@ -337,8 +354,14 @@ public class ControllerImplementation implements IController, ActionListener {
     }
 
     public void handleUpdatePerson() {
+        Pattern pattern = Pattern.compile("^\\+?[0-9]{1,4}?[-.\\s]?\\(?\\d{1,3}\\)?[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,9}$", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(update.getPhoneNumber().getText());
+        
+        boolean matchFound=matcher.find();
+        
+        if(matchFound){
         if (update != null) {
-            Person p = new Person(update.getNam().getText(), update.getNif().getText());
+            Person p = new Person(update.getNam().getText(), update.getNif().getText(), update.getPhoneNumber().getText());
             if ((update.getDateOfBirth().getModel().getValue()) != null) {
                 p.setDateOfBirth(((GregorianCalendar) update.getDateOfBirth().getModel().getValue()).getTime());
             }
@@ -347,6 +370,9 @@ public class ControllerImplementation implements IController, ActionListener {
             }
             update(p);
             update.getReset().doClick();
+        }
+        }else{
+            JOptionPane.showMessageDialog(insert, "Phone Number not valid. Valid formats: +34 123 456 789, +1-800-555-1234, (123) 456-7890, 123.456.7890 and 123456789.");
         }
     }
     
@@ -374,7 +400,7 @@ public class ControllerImplementation implements IController, ActionListener {
             count.setVisible(true);
         } else {
             
-            JOptionPane.showMessageDialog(menu, "There are no people registered yet.", "Read All - People v1.1.0", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(menu, "There are no people registered yet.", "Count - People v1.1.0", JOptionPane.WARNING_MESSAGE);
             
         }
     }
@@ -395,10 +421,11 @@ public class ControllerImplementation implements IController, ActionListener {
                 } else {
                     model.setValueAt("", i, 2);
                 }
+                model.setValueAt(s.get(i).getPhoneNumber(), i, 3);
                 if (s.get(i).getPhoto() != null) {
-                    model.setValueAt("yes", i, 3);
+                    model.setValueAt("yes", i, 4);
                 } else {
-                    model.setValueAt("no", i, 3);
+                    model.setValueAt("no", i, 4);
                 }
             }
             readAll.setVisible(true);

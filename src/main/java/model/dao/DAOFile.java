@@ -51,10 +51,10 @@ public class DAOFile implements IDAO {
                     date = dateFormat.parse(data[2]);
                 }
                 ImageIcon photo = null;
-                if (!data[3].equals("null")) {
-                    photo = new ImageIcon(data[3]);
+                if (!data[4].equals("null")) {
+                    photo = new ImageIcon(data[4]);
                 }
-                personToRead = new Person(data[0], data[1], date, photo);
+                personToRead = new Person(data[0], data[1], date,data[3], photo);
                 break;
             }
             line = br.readLine();
@@ -80,10 +80,10 @@ public class DAOFile implements IDAO {
                 date = dateFormat.parse(data[2]);
             }
             ImageIcon photo = null;
-            if (!data[3].equals("null")) {
-                photo = new ImageIcon(data[3]);
+            if (!data[4].equals("null")) {
+                photo = new ImageIcon(data[4]);
             }
-            people.add(new Person(data[0], data[1], date, photo));
+            people.add(new Person(data[0], data[1], date,data[3], photo));
             line = br.readLine();
         }
         br.close();
@@ -100,9 +100,9 @@ public class DAOFile implements IDAO {
         if (p.getDateOfBirth() != null) {
             DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
             String dateAsString = dateFormat.format(p.getDateOfBirth());
-            bw.write(p.getName() + "\t" + p.getNif() + "\t" + dateAsString + "\t");
+            bw.write(p.getName() + "\t" + p.getNif() + "\t" + dateAsString + "\t"+ p.getPhoneNumber() + "\t");
         } else {
-            bw.write(p.getName() + "\t" + p.getNif() + "\t" + "null" + "\t");
+            bw.write(p.getName() + "\t" + p.getNif() + "\t" + "null" + "\t"+ p.getPhoneNumber() + "\t");
         }
         if (p.getPhoto() != null) {
             FileOutputStream out;
@@ -148,7 +148,7 @@ public class DAOFile implements IDAO {
                     photoFile.delete();
                 }
             } else {
-                textoNuevo += d[0] + "\t" + d[1] + "\t" + d[2] + "\t" + d[3]
+                textoNuevo += d[0] + "\t" + d[1] + "\t" + d[2] + "\t" + d[3]+ "\t" + d[4]
                         + "\n";
             }
         }

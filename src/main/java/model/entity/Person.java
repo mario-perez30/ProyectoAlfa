@@ -21,6 +21,7 @@ public class Person implements Serializable{
     private String nif;
     private String name;
     private Date dateOfBirth;
+    private String phoneNumber;
     @Transient
     private ImageIcon photo;
     @Lob
@@ -47,6 +48,12 @@ public class Person implements Serializable{
         this.name = name;
         this.nif = nif;
     }
+    
+    public Person(String name, String nif,String phoneNumber) {
+        this.name = name;
+        this.nif = nif;
+        this.phoneNumber=phoneNumber;
+    }
 
     /**
      * Constructor with all data
@@ -57,10 +64,11 @@ public class Person implements Serializable{
      * @param dateOfBirth
      * @param photo
      */
-    public Person(String name, String nif, Date dateOfBirth, ImageIcon photo) {
+    public Person(String name, String nif, Date dateOfBirth,String phoneNumber, ImageIcon photo) {
         this.name = name;      
         this.nif = nif;
         this.dateOfBirth = dateOfBirth;
+        this.phoneNumber=phoneNumber;
         this.photo = photo;
     }
 
@@ -88,6 +96,17 @@ public class Person implements Serializable{
     public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+ 
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+    
+    
 
     public ImageIcon getPhoto() {
         return photo;
@@ -147,7 +166,7 @@ public class Person implements Serializable{
     @Override
     public String toString() {
         return "Person {" + "Name = " + name + ", NIF = " + nif
-                + ", DateOfBirth = " + dateOfBirth + ", Photo = " + (photo!=null) + "}";
+                + ", DateOfBirth = " + dateOfBirth + ", Phone Number = " + phoneNumber + ", Photo = " + (photo!=null) + "}";
     }
 
 }

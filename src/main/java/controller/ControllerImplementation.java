@@ -18,6 +18,7 @@ import view.Read;
 import view.ReadAll;
 import view.Update;
 import view.Count;
+import view.LogIn;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -37,9 +38,11 @@ import java.util.regex.Pattern;
 import javax.persistence.*;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.jdatepicker.DateModel;
+
 
 /**
  * This class starts the visual part of the application and programs and manages
@@ -56,6 +59,7 @@ public class ControllerImplementation implements IController, ActionListener {
     private final DataStorageSelection dSS;
     private IDAO dao;
     private Menu menu;
+    private LogIn login;
     private Insert insert;
     private Read read;
     private Delete delete;
@@ -160,9 +164,29 @@ public class ControllerImplementation implements IController, ActionListener {
                 setupJPADatabase();
                 break;
         }
-        setupMenu();
+        if(setupLogin()) {
+            setupMenu();
+        } else {
+        JOptionPane.showMessageDialog(null, "Log in Cancelled");
+        System.exit(0);
+        }    
     }
-
+    private boolean setupLogin(){
+        
+        JFrame fakeMain = new JFrame();
+        fakeMain.setUndecorated(true);
+        fakeMain.setSize(0, 0);
+        fakeMain.setLocationRelativeTo(null);
+        fakeMain.setVisible(true);
+        
+        login = new LogIn(fakeMain); 
+        login.setLocationRelativeTo(null); 
+        login.setVisible(true); 
+        fakeMain.dispose();
+        return login.isLoginSuccessful(); 
+        
+    }
+    
     private void setupFileStorage() {
         File folderPath = new File(Routes.FILE.getFolderPath());
         File folderPhotos = new File(Routes.FILE.getFolderPhotos());

@@ -25,14 +25,25 @@ import org.jdatepicker.JDatePicker;
  */
 public class Update extends javax.swing.JDialog {
 
-    public Update(java.awt.Frame parent, boolean modal) {
+    private String[] loggedUser;
+    
+    public Update(java.awt.Frame parent, boolean modal,String[] loggedUser) {
         super(parent, modal);
         initComponents();
+        this.loggedUser=loggedUser;
+        verifyUser();
         setLocationRelativeTo(null);
         DropPhotoListener d = new DropPhotoListener(photo, this);
         DropTarget dropTarget = new DropTarget(photo, d);
         read.setVisible(false);
         update.setEnabled(false);
+    }
+    
+     public void verifyUser(){
+        if(loggedUser[2].equalsIgnoreCase("employee")){
+            JOptionPane.showConfirmDialog(rootPane, "Employees cannot access this option. Returning to menu. ");
+            this.setVisible(false);
+        }
     }
 
     public JButton getUpdate() {

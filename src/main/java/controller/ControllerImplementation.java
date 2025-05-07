@@ -17,6 +17,8 @@ import view.Menu;
 import view.Read;
 import view.ReadAll;
 import view.Update;
+import view.Count;
+import view.LogIn;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -31,12 +33,16 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.persistence.*;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.jdatepicker.DateModel;
+
 
 /**
  * This class starts the visual part of the application and programs and manages
@@ -53,11 +59,13 @@ public class ControllerImplementation implements IController, ActionListener {
     private final DataStorageSelection dSS;
     private IDAO dao;
     private Menu menu;
+    private LogIn login;
     private Insert insert;
     private Read read;
     private Delete delete;
     private Update update;
     private ReadAll readAll;
+    private Count count;
 
     /**
      * This constructor allows the controller to know which data storage option
@@ -91,6 +99,10 @@ public class ControllerImplementation implements IController, ActionListener {
         
         if (e.getSource() == dSS.getAccept()[0]) {
             handleDataStorageSelection();
+        }else if (e.getSource() == menu.getCount()) {
+            
+            handleCount();
+            
         } else if (e.getSource() == menu.getInsert()) {
             handleInsertAction();
             
@@ -152,9 +164,29 @@ public class ControllerImplementation implements IController, ActionListener {
                 setupJPADatabase();
                 break;
         }
-        setupMenu();
+        if(setupLogin()) {
+            setupMenu();
+        } else {
+        JOptionPane.showMessageDialog(null, "Log in Cancelled");
+        System.exit(0);
+        }    
     }
-
+    private boolean setupLogin(){
+        
+        JFrame fakeMain = new JFrame();
+        fakeMain.setUndecorated(true);
+        fakeMain.setSize(0, 0);
+        fakeMain.setLocationRelativeTo(null);
+        fakeMain.setVisible(true);
+        
+        login = new LogIn(fakeMain); 
+        login.setLocationRelativeTo(null); 
+        login.setVisible(true); 
+        fakeMain.dispose();
+        return login.isLoginSuccessful(); 
+        
+    }
+    
     private void setupFileStorage() {
         File folderPath = new File(Routes.FILE.getFolderPath());
         File folderPhotos = new File(Routes.FILE.getFolderPhotos());
@@ -198,6 +230,7 @@ public class ControllerImplementation implements IController, ActionListener {
                         + "nif varchar(9) primary key not null, "
                         + "name varchar(50), "
                         + "dateOfBirth DATE, "
+                        + "phoneNumber varchar(50), "
                         + "photo varchar(200) );");
                 stmt.close();
                 conn.close();
@@ -231,6 +264,8 @@ public class ControllerImplementation implements IController, ActionListener {
         menu.getDelete().addActionListener(this);
         menu.getReadAll().addActionListener(this);
         menu.getDeleteAll().addActionListener(this);
+        menu.getCount().addActionListener(this);
+        
     }
 
     private void handleInsertAction() {
@@ -240,15 +275,26 @@ public class ControllerImplementation implements IController, ActionListener {
     }
 
     private void handleInsertPerson() {
-        Person p = new Person(insert.getNam().getText(), insert.getNif().getText());
-        if (insert.getDateOfBirth().getModel().getValue() != null) {
+        Pattern pattern = Pattern.compile("^\\+?[0-9]{1,4}?[-.\\s]?\\(?\\d{1,3}\\)?[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,9}$", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(insert.getphoneNumber().getText());
+        
+        boolean matchFound=matcher.find();
+        
+        if(matchFound){
+            
+            Person p = new Person(insert.getNam().getText(), insert.getNif().getText(), insert.getphoneNumber().getText());
+            if (insert.getDateOfBirth().getModel().getValue() != null) {
             p.setDateOfBirth(((GregorianCalendar) insert.getDateOfBirth().getModel().getValue()).getTime());
-        }
-        if (insert.getPhoto().getIcon() != null) {
+            }   
+            if (insert.getPhoto().getIcon() != null) {
             p.setPhoto((ImageIcon) insert.getPhoto().getIcon());
+            }
+            insert(p);
+            insert.getReset().doClick();
+        }else{
+            JOptionPane.showMessageDialog(insert, "Phone Number not valid. Valid formats: +34 123 456 789, +1-800-555-1234, (123) 456-7890, 123.456.7890 and 123456789.");
         }
-        insert(p);
-        insert.getReset().doClick();
+        
     }
 
     private void handleReadAction() {
@@ -268,6 +314,7 @@ public class ControllerImplementation implements IController, ActionListener {
                 DateModel<Calendar> dateModel = (DateModel<Calendar>) read.getDateOfBirth().getModel();
                 dateModel.setValue(calendar);
             }
+            read.getPhoneNumber().setText(pNew.getPhoneNumber());
             //To avoid charging former images
             if (pNew.getPhoto() != null) {
                 pNew.getPhoto().getImage().flush();
@@ -307,9 +354,11 @@ public class ControllerImplementation implements IController, ActionListener {
             if (pNew != null) {
                 update.getNam().setEnabled(true);
                 update.getDateOfBirth().setEnabled(true);
+                update.getPhoneNumber().setEnabled(true);
                 update.getPhoto().setEnabled(true);
                 update.getUpdate().setEnabled(true);
                 update.getNam().setText(pNew.getName());
+                update.getPhoneNumber().setText(pNew.getPhoneNumber());
                 if (pNew.getDateOfBirth() != null) {
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTime(pNew.getDateOfBirth());
@@ -329,8 +378,14 @@ public class ControllerImplementation implements IController, ActionListener {
     }
 
     public void handleUpdatePerson() {
+        Pattern pattern = Pattern.compile("^\\+?[0-9]{1,4}?[-.\\s]?\\(?\\d{1,3}\\)?[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,9}$", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(update.getPhoneNumber().getText());
+        
+        boolean matchFound=matcher.find();
+        
+        if(matchFound){
         if (update != null) {
-            Person p = new Person(update.getNam().getText(), update.getNif().getText());
+            Person p = new Person(update.getNam().getText(), update.getNif().getText(), update.getPhoneNumber().getText());
             if ((update.getDateOfBirth().getModel().getValue()) != null) {
                 p.setDateOfBirth(((GregorianCalendar) update.getDateOfBirth().getModel().getValue()).getTime());
             }
@@ -340,8 +395,40 @@ public class ControllerImplementation implements IController, ActionListener {
             update(p);
             update.getReset().doClick();
         }
+        }else{
+            JOptionPane.showMessageDialog(insert, "Phone Number not valid. Valid formats: +34 123 456 789, +1-800-555-1234, (123) 456-7890, 123.456.7890 and 123456789.");
+        }
     }
-
+    
+    public void handleCount() {
+        
+            
+        try {
+            count();
+        } catch (Exception ex) {
+            if (ex instanceof FileNotFoundException || ex instanceof IOException
+                    || ex instanceof ParseException || ex instanceof ClassNotFoundException
+                    || ex instanceof SQLException || ex instanceof PersistenceException) {
+                JOptionPane.showMessageDialog(menu, ex.getMessage() + " Closing application.", "Delete All - People v1.1.0", JOptionPane.ERROR_MESSAGE);
+                System.exit(0);
+            }
+        }
+    }
+    public void count(){
+        
+        ArrayList<Person> s = readAll();
+        int quantity = s.size();
+        if (!s.isEmpty()) {
+            
+            count = new Count(menu, true,quantity);
+            count.setVisible(true);
+        } else {
+            
+            JOptionPane.showMessageDialog(menu, "There are no people registered yet.", "Count - People v1.1.0", JOptionPane.WARNING_MESSAGE);
+            
+        }
+    }
+    
     public void handleReadAll() {
         ArrayList<Person> s = readAll();
         if (s.isEmpty()) {
@@ -358,10 +445,11 @@ public class ControllerImplementation implements IController, ActionListener {
                 } else {
                     model.setValueAt("", i, 2);
                 }
+                model.setValueAt(s.get(i).getPhoneNumber(), i, 3);
                 if (s.get(i).getPhoto() != null) {
-                    model.setValueAt("yes", i, 3);
+                    model.setValueAt("yes", i, 4);
                 } else {
-                    model.setValueAt("no", i, 3);
+                    model.setValueAt("no", i, 4);
                 }
             }
             readAll.setVisible(true);
@@ -386,6 +474,8 @@ public class ControllerImplementation implements IController, ActionListener {
             deleteAll();
         }
     }
+    
+    
     
     /**
      * This function inserts the Person object with the requested NIF, if it

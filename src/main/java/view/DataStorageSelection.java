@@ -28,7 +28,7 @@ public class DataStorageSelection extends javax.swing.JFrame {
      * @version 1.1.0
      */
     public DataStorageSelection() {
-        initComponents();
+        initComponents(); //Abre menu seleccionar persistencia datos
         String pathImageLogo = Routes.APPIMAGES.getFolderPath()+ File.separator + "logo.png";
         try {
             setIconImage(new ImageIcon(ImageIO.read(new File(pathImageLogo))).getImage());

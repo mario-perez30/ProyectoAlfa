@@ -5,6 +5,7 @@
 package view;
 
 import com.sun.source.tree.ParenthesizedTree;
+import controller.ControllerImplementation;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.BufferedReader;
@@ -223,7 +224,7 @@ public class LogIn extends javax.swing.JDialog {
 
     if (authenticated==true) {
         loginSuccessful = true;
-        
+        ControllerImplementation.loggedUser=loggedUser;
         dispose();
     } else {
         javax.swing.JOptionPane.showMessageDialog(this, "Incorrect username or password");

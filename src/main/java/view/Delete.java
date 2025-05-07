@@ -19,16 +19,27 @@ import javax.swing.JTextField;
  * @version 1.1.0
  */
 public class Delete extends javax.swing.JDialog {
-    
+
     /**
      * Creates new form StudentDelete
      * @param parent
      * @param modal
      */
-    public Delete(java.awt.Frame parent, boolean modal) {
+    private String[] loggedUser;
+    
+    public Delete(java.awt.Frame parent, boolean modal,String[] loggedUser) {
         super(parent, modal);
         initComponents();
+        this.loggedUser=loggedUser;
+        verifyUser();
         setLocationRelativeTo(null);
+    }
+    
+    public void verifyUser(){
+        if(loggedUser[2].equalsIgnoreCase("employee")){
+            JOptionPane.showConfirmDialog(rootPane, "Employees cannot access this option. Returning to menu. ");
+            this.setVisible(false);
+        }
     }
 
     public JButton getDelete() {
@@ -83,11 +94,6 @@ public class Delete extends javax.swing.JDialog {
         delete.setMaximumSize(new java.awt.Dimension(187, 33));
         delete.setMinimumSize(new java.awt.Dimension(187, 33));
         delete.setPreferredSize(new java.awt.Dimension(187, 33));
-        delete.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deleteActionPerformed(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
@@ -181,10 +187,6 @@ public class Delete extends javax.swing.JDialog {
         nif.setEditable(true);
         delete.setEnabled(false);
     }//GEN-LAST:event_resetActionPerformed
-
-    private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
-
-    }//GEN-LAST:event_deleteActionPerformed
 
     /**
      * @param args the command line arguments

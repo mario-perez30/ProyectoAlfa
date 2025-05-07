@@ -66,6 +66,10 @@ public class ControllerImplementation implements IController, ActionListener {
     private Update update;
     private ReadAll readAll;
     private Count count;
+    
+    public static String[] loggedUser;
+    
+    
 
     /**
      * This constructor allows the controller to know which data storage option
@@ -256,7 +260,7 @@ public class ControllerImplementation implements IController, ActionListener {
     }
 
     private void setupMenu() {
-        menu = new Menu();
+        menu = new Menu(loggedUser);
         menu.setVisible(true);
         menu.getInsert().addActionListener(this);
         menu.getRead().addActionListener(this);
@@ -269,7 +273,7 @@ public class ControllerImplementation implements IController, ActionListener {
     }
 
     private void handleInsertAction() {
-        insert = new Insert(menu, true);
+        insert = new Insert(menu, true,loggedUser);
         insert.getInsert().addActionListener(this);
         insert.setVisible(true);
     }
@@ -327,7 +331,7 @@ public class ControllerImplementation implements IController, ActionListener {
     }
 
     public void handleDeleteAction() {
-        delete = new Delete(menu, true);
+        delete = new Delete(menu, true,loggedUser);
         delete.getDelete().addActionListener(this);
         delete.setVisible(true);
     }
@@ -341,7 +345,7 @@ public class ControllerImplementation implements IController, ActionListener {
     }
 
     public void handleUpdateAction() {
-        update = new Update(menu, true);
+        update = new Update(menu, true, loggedUser);
         update.getUpdate().addActionListener(this);
         update.getRead().addActionListener(this);
         update.setVisible(true);
@@ -457,6 +461,10 @@ public class ControllerImplementation implements IController, ActionListener {
     }
 
     public void handleDeleteAll() {
+        if(loggedUser[2].equalsIgnoreCase("employee")){
+            JOptionPane.showConfirmDialog(menu, "Employees cannot access this option.");
+            
+        }else{
         Object[] options = {"Yes", "No"};
         //int answer = JOptionPane.showConfirmDialog(menu, "Are you sure to delete all people registered?", "Delete All - People v1.1.0", 0, 0);
         int answer = JOptionPane.showOptionDialog(
@@ -472,6 +480,7 @@ public class ControllerImplementation implements IController, ActionListener {
 
         if (answer == 0) {
             deleteAll();
+        }
         }
     }
     

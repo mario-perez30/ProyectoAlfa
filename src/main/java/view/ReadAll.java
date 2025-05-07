@@ -45,19 +45,21 @@ public class ReadAll extends javax.swing.JDialog {
         setTitle("Read All - People v1.1.0");
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
+        jScrollPane1.setName(""); // NOI18N
+
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "NIF", "Name", "Date of Birth", "Photo"
+                "NIF", "Name", "Date of Birth", "Phone Number", "Photo"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {

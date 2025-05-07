@@ -226,7 +226,7 @@ public class LogIn extends javax.swing.JDialog {
         
         dispose();
     } else {
-        javax.swing.JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos");
+        javax.swing.JOptionPane.showMessageDialog(this, "Incorrect username or password");
     }
 }
     

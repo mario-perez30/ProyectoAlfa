@@ -25,22 +25,14 @@ public class Delete extends javax.swing.JDialog {
      * @param parent
      * @param modal
      */
-    private String[] loggedUser;
-    
-    public Delete(java.awt.Frame parent, boolean modal,String[] loggedUser) {
+   
+    public Delete(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        this.loggedUser=loggedUser;
-        verifyUser();
         setLocationRelativeTo(null);
     }
     
-    public void verifyUser(){
-        if(loggedUser[2].equalsIgnoreCase("employee")){
-            JOptionPane.showConfirmDialog(rootPane, "Employees cannot access this option. Returning to menu. ");
-            this.setVisible(false);
-        }
-    }
+    
 
     public JButton getDelete() {
         return delete;

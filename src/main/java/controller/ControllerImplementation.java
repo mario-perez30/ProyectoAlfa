@@ -273,9 +273,14 @@ public class ControllerImplementation implements IController, ActionListener {
     }
 
     private void handleInsertAction() {
-        insert = new Insert(menu, true,loggedUser);
+        if(loggedUser[2].equalsIgnoreCase("employee")){
+            JOptionPane.showMessageDialog(menu, "Employees cannot access this option.");
+            
+        }else{
+        insert = new Insert(menu, true);
         insert.getInsert().addActionListener(this);
         insert.setVisible(true);
+        }
     }
 
     private void handleInsertPerson() {
@@ -331,9 +336,14 @@ public class ControllerImplementation implements IController, ActionListener {
     }
 
     public void handleDeleteAction() {
-        delete = new Delete(menu, true,loggedUser);
+        if(loggedUser[2].equalsIgnoreCase("employee")){
+            JOptionPane.showMessageDialog(menu, "Employees cannot access this option.");
+            
+        }else{
+        delete = new Delete(menu, true);
         delete.getDelete().addActionListener(this);
         delete.setVisible(true);
+        }
     }
 
     public void handleDeletePerson() {
@@ -345,10 +355,15 @@ public class ControllerImplementation implements IController, ActionListener {
     }
 
     public void handleUpdateAction() {
-        update = new Update(menu, true, loggedUser);
+        if(loggedUser[2].equalsIgnoreCase("employee")){
+            JOptionPane.showMessageDialog(menu, "Employees cannot access this option.");
+            
+        }else{
+        update = new Update(menu, true);
         update.getUpdate().addActionListener(this);
         update.getRead().addActionListener(this);
         update.setVisible(true);
+        }
     }
 
     public void handleReadForUpdate() {
@@ -461,11 +476,9 @@ public class ControllerImplementation implements IController, ActionListener {
     }
 
     public void handleDeleteAll() {
-        if(loggedUser[2].equalsIgnoreCase("employee")){
-            JOptionPane.showConfirmDialog(menu, "Employees cannot access this option.");
+       if(!loggedUser[2].equalsIgnoreCase("employee")){
             
-        }else{
-        Object[] options = {"Yes", "No"};
+            Object[] options = {"Yes", "No"};
         //int answer = JOptionPane.showConfirmDialog(menu, "Are you sure to delete all people registered?", "Delete All - People v1.1.0", 0, 0);
         int answer = JOptionPane.showOptionDialog(
         menu,
@@ -476,12 +489,19 @@ public class ControllerImplementation implements IController, ActionListener {
         null,
         options,
         options[1] // Default selection is "No"
-    );
+        );
 
         if (answer == 0) {
+            if(!loggedUser[2].equalsIgnoreCase("employee")){
             deleteAll();
+            }
         }
-        }
+       }else{
+           JOptionPane.showMessageDialog(menu, "Employees cannot access this option.");
+           
+                   
+       }
+       
     }
     
     

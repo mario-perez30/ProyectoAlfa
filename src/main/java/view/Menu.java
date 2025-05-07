@@ -35,7 +35,6 @@ public class Menu extends javax.swing.JFrame {
             deleteAll.setVisible(false);
         }
     }
-
     public JButton getInsert() {
         return insert;
     }

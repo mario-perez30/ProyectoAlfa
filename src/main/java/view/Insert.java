@@ -1,7 +1,11 @@
+
 package view;
 
 
 import java.awt.Color;
+
+import java.awt.Dimension;
+import java.awt.Insets;
 import static utils.DataValidation.calculateNifLetter;
 import static utils.DataValidation.isLetter;
 import static utils.DataValidation.isNumber;
@@ -18,6 +22,7 @@ import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -41,8 +46,21 @@ public class Insert extends javax.swing.JDialog {
         DropTarget dropTarget = new DropTarget(photo, d);
         insert.setEnabled(false);
         setPlaceholders();
+        setDateButton();
     }
     
+    public void setDateButton(){
+        JButton dateButton = (JButton) ((JComponent) dateOfBirth).getComponent(1);
+        dateButton.setText("Select a date");
+        dateButton.setPreferredSize(new Dimension(100, 25)); // puedes ajustar tamaño
+        dateButton.setMargin(new Insets(0, 5, 0, 5)); // margen interno opcional
+        dateOfBirth.revalidate();
+        dateOfBirth.repaint();
+    }
+    
+
+    
+
     public void setPlaceholders(){
         name.setText("Enter full name");
         nif.setText("Enter NIF number, letter is calculated (e.g., 12345678)");
@@ -331,6 +349,7 @@ public class Insert extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(12, 12, 12, 12);
         getContentPane().add(jLabel9, gridBagConstraints);
 
+        dateOfBirth.setToolTipText("");
         dateOfBirth.setDebugGraphicsOptions(javax.swing.DebugGraphics.NONE_OPTION);
         dateOfBirth.setMaximumSize(new java.awt.Dimension(350, 22));
         dateOfBirth.setMinimumSize(new java.awt.Dimension(350, 22));
@@ -387,9 +406,13 @@ public class Insert extends javax.swing.JDialog {
 
     private void resetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetActionPerformed
         nif.setEditable(true);
-        nif.setText("");
-        name.setText("");
-        phoneNumber.setText("");
+        name.setText("Enter full name");
+        nif.setText("Enter NIF number, letter is calculated (e.g., 12345678)");
+        phoneNumber.setText("Formats:+34 123 456 789, +1-800-555-1234, 123.456.7890, 123456789.");
+        
+        name.setForeground(Color.GRAY);
+        nif.setForeground(Color.GRAY);
+        phoneNumber.setForeground(Color.GRAY);
         photo.setIcon(null);
         //We reset the calendar date to the current date ...
         LocalDate dateLocate = LocalDate.now();

@@ -1,5 +1,7 @@
 package view;
 
+import java.awt.Dimension;
+import java.awt.Insets;
 import static utils.DataValidation.calculateNifLetter;
 import static utils.DataValidation.isNumber;
 
@@ -10,6 +12,7 @@ import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -27,8 +30,18 @@ public class Read extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         read.setVisible(false);
+        setDateButton();
     }
-
+    
+    public void setDateButton(){
+        JButton dateButton = (JButton) ((JComponent) dateOfBirth).getComponent(1);
+        dateButton.setText("Select a date");
+        dateButton.setPreferredSize(new Dimension(100, 25)); // puedes ajustar tamaño
+        dateButton.setMargin(new Insets(0, 5, 0, 5)); // margen interno opcional
+        dateOfBirth.revalidate();
+        dateOfBirth.repaint();
+    }
+    
     public JButton getRead() {
         return read;
     }

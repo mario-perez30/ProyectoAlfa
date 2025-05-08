@@ -3,6 +3,7 @@ package view;
 
 
 import java.awt.Color;
+
 import java.awt.Dimension;
 import java.awt.Insets;
 import static utils.DataValidation.calculateNifLetter;
@@ -57,6 +58,9 @@ public class Insert extends javax.swing.JDialog {
         dateOfBirth.repaint();
     }
     
+
+    
+
     public void setPlaceholders(){
         name.setText("Enter full name");
         nif.setText("Enter NIF number, letter is calculated (e.g., 12345678)");

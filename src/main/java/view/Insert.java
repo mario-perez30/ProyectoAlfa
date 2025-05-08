@@ -1,5 +1,7 @@
 package view;
 
+
+import java.awt.Color;
 import static utils.DataValidation.calculateNifLetter;
 import static utils.DataValidation.isLetter;
 import static utils.DataValidation.isNumber;
@@ -7,6 +9,8 @@ import static utils.DataValidation.isNumber;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 import java.awt.dnd.DropTarget;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -36,9 +40,74 @@ public class Insert extends javax.swing.JDialog {
         DropPhotoListener d = new DropPhotoListener(photo, this);
         DropTarget dropTarget = new DropTarget(photo, d);
         insert.setEnabled(false);
+        setPlaceholders();
     }
     
-    
+    public void setPlaceholders(){
+        name.setText("Enter full name");
+        nif.setText("Enter NIF number, letter is calculated (e.g., 12345678)");
+        phoneNumber.setText("Formats:+34 123 456 789, +1-800-555-1234, 123.456.7890, 123456789.");
+        
+        name.setForeground(Color.GRAY);
+ 
+        name.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (name.getText().equals("Enter full name")) {
+                    name.setText("");
+                    name.setForeground(Color.BLACK);
+                }
+            }
+ 
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (name.getText().isEmpty()) {
+                    name.setForeground(Color.GRAY);
+                    name.setText("Enter full name");
+                }
+            }
+        });
+        
+        nif.setForeground(Color.GRAY);
+ 
+        nif.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (nif.getText().equals("Enter NIF number, letter is calculated (e.g., 12345678)")) {
+                    nif.setText("");
+                    nif.setForeground(Color.BLACK);
+                }
+            }
+ 
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (nif.getText().isEmpty()) {
+                    nif.setForeground(Color.GRAY);
+                    nif.setText("Enter NIF number, letter is calculated (e.g., 12345678)");
+                }
+            }
+        });
+        
+        phoneNumber.setForeground(Color.GRAY);
+ 
+        phoneNumber.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (phoneNumber.getText().equals("Formats:+34 123 456 789, +1-800-555-1234, 123.456.7890, 123456789.")) {
+                    phoneNumber.setText("");
+                    phoneNumber.setForeground(Color.BLACK);
+                }
+            }
+ 
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (phoneNumber.getText().isEmpty()) {
+                    phoneNumber.setForeground(Color.GRAY);
+                    phoneNumber.setText("Formats:+34 123 456 789, +1-800-555-1234, 123.456.7890, 123456789.");
+                }
+            }
+        });
+    }
 
     public JButton getReset() {
         return reset;
@@ -298,7 +367,7 @@ public class Insert extends javax.swing.JDialog {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(12, 12, 12, 24);

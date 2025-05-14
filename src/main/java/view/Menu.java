@@ -14,16 +14,27 @@ import javax.swing.JOptionPane;
  * @version 1.1.0
  */
 public class Menu extends javax.swing.JFrame {
-
-    public Menu() {
+    
+    private String[] loggedUser;
+    
+    public Menu(String[] loggedUser) {
         initComponents();
+        this.loggedUser=loggedUser;
+        verifyUser();
          try {
             setIconImage(new ImageIcon(ImageIO.read(new File("images/logo.png"))).getImage());
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(null, "Application logo is not available", "WARNING MESSAGE", JOptionPane.WARNING_MESSAGE);
         }
     }
-
+    public void verifyUser(){
+        if(loggedUser[2].equalsIgnoreCase("employee")){
+            insert.setVisible(false);
+            update.setVisible(false);
+            delete.setVisible(false);
+            deleteAll.setVisible(false);
+        }
+    }
     public JButton getInsert() {
         return insert;
     }

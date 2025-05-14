@@ -18,6 +18,7 @@ import view.Read;
 import view.ReadAll;
 import view.Update;
 import view.Count;
+import view.LogIn;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -37,9 +38,11 @@ import java.util.regex.Pattern;
 import javax.persistence.*;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.jdatepicker.DateModel;
+
 
 /**
  * This class starts the visual part of the application and programs and manages
@@ -56,12 +59,17 @@ public class ControllerImplementation implements IController, ActionListener {
     private final DataStorageSelection dSS;
     private IDAO dao;
     private Menu menu;
+    private LogIn login;
     private Insert insert;
     private Read read;
     private Delete delete;
     private Update update;
     private ReadAll readAll;
     private Count count;
+    
+    public static String[] loggedUser;
+    
+    
 
     /**
      * This constructor allows the controller to know which data storage option
@@ -160,9 +168,29 @@ public class ControllerImplementation implements IController, ActionListener {
                 setupJPADatabase();
                 break;
         }
-        setupMenu();
+        if(setupLogin()) {
+            setupMenu();
+        } else {
+        JOptionPane.showMessageDialog(null, "Log in Cancelled");
+        System.exit(0);
+        }    
     }
-
+    private boolean setupLogin(){
+        
+        JFrame fakeMain = new JFrame();
+        fakeMain.setUndecorated(true);
+        fakeMain.setSize(0, 0);
+        fakeMain.setLocationRelativeTo(null);
+        fakeMain.setVisible(true);
+        
+        login = new LogIn(fakeMain); 
+        login.setLocationRelativeTo(null); 
+        login.setVisible(true); 
+        fakeMain.dispose();
+        return login.isLoginSuccessful(); 
+        
+    }
+    
     private void setupFileStorage() {
         File folderPath = new File(Routes.FILE.getFolderPath());
         File folderPhotos = new File(Routes.FILE.getFolderPhotos());
@@ -232,7 +260,7 @@ public class ControllerImplementation implements IController, ActionListener {
     }
 
     private void setupMenu() {
-        menu = new Menu();
+        menu = new Menu(loggedUser);
         menu.setVisible(true);
         menu.getInsert().addActionListener(this);
         menu.getRead().addActionListener(this);
@@ -245,9 +273,14 @@ public class ControllerImplementation implements IController, ActionListener {
     }
 
     private void handleInsertAction() {
+        if(loggedUser[2].equalsIgnoreCase("employee")){
+            JOptionPane.showMessageDialog(menu, "Employees cannot access this option.");
+            
+        }else{
         insert = new Insert(menu, true);
         insert.getInsert().addActionListener(this);
         insert.setVisible(true);
+        }
     }
 
     private void handleInsertPerson() {
@@ -303,9 +336,14 @@ public class ControllerImplementation implements IController, ActionListener {
     }
 
     public void handleDeleteAction() {
+        if(loggedUser[2].equalsIgnoreCase("employee")){
+            JOptionPane.showMessageDialog(menu, "Employees cannot access this option.");
+            
+        }else{
         delete = new Delete(menu, true);
         delete.getDelete().addActionListener(this);
         delete.setVisible(true);
+        }
     }
 
     public void handleDeletePerson() {
@@ -317,10 +355,15 @@ public class ControllerImplementation implements IController, ActionListener {
     }
 
     public void handleUpdateAction() {
+        if(loggedUser[2].equalsIgnoreCase("employee")){
+            JOptionPane.showMessageDialog(menu, "Employees cannot access this option.");
+            
+        }else{
         update = new Update(menu, true);
         update.getUpdate().addActionListener(this);
         update.getRead().addActionListener(this);
         update.setVisible(true);
+        }
     }
 
     public void handleReadForUpdate() {
@@ -433,7 +476,9 @@ public class ControllerImplementation implements IController, ActionListener {
     }
 
     public void handleDeleteAll() {
-        Object[] options = {"Yes", "No"};
+       if(!loggedUser[2].equalsIgnoreCase("employee")){
+            
+            Object[] options = {"Yes", "No"};
         //int answer = JOptionPane.showConfirmDialog(menu, "Are you sure to delete all people registered?", "Delete All - People v1.1.0", 0, 0);
         int answer = JOptionPane.showOptionDialog(
         menu,
@@ -444,12 +489,19 @@ public class ControllerImplementation implements IController, ActionListener {
         null,
         options,
         options[1] // Default selection is "No"
-    );
+        );
 
         if (answer == 0) {
+            if(!loggedUser[2].equalsIgnoreCase("employee")){
             deleteAll();
             JOptionPane.showMessageDialog(menu , "All persons have been deleted successfully.", "Message", JOptionPane.INFORMATION_MESSAGE);
         }
+       }else{
+           JOptionPane.showMessageDialog(menu, "Employees cannot access this option.");
+           
+                   
+       }
+       
     }
     
     

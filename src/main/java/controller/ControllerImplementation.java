@@ -496,14 +496,15 @@ public class ControllerImplementation implements IController, ActionListener {
             deleteAll();
             JOptionPane.showMessageDialog(menu , "All persons have been deleted successfully.", "Message", JOptionPane.INFORMATION_MESSAGE);
         }
-       }else{
+       else{
            JOptionPane.showMessageDialog(menu, "Employees cannot access this option.");
            
                    
        }
        
     }
-    
+       }
+    }
     
     
     /**

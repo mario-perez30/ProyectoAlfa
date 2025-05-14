@@ -43,7 +43,6 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.jdatepicker.DateModel;
 
-
 /**
  * This class starts the visual part of the application and programs and manages
  * all the events that it can receive from it. For each event received the
@@ -66,10 +65,8 @@ public class ControllerImplementation implements IController, ActionListener {
     private Update update;
     private ReadAll readAll;
     private Count count;
-    
+
     public static String[] loggedUser;
-    
-    
 
     /**
      * This constructor allows the controller to know which data storage option
@@ -100,49 +97,48 @@ public class ControllerImplementation implements IController, ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        
+
         if (e.getSource() == dSS.getAccept()[0]) {
             handleDataStorageSelection();
-        }else if (e.getSource() == menu.getCount()) {
-            
+        } else if (e.getSource() == menu.getCount()) {
+
             handleCount();
-            
+
         } else if (e.getSource() == menu.getInsert()) {
             handleInsertAction();
-            
+
         } else if (insert != null && e.getSource() == insert.getInsert()) {
             handleInsertPerson();
-            
+
         } else if (e.getSource() == menu.getRead()) {
             handleReadAction();
-            
+
         } else if (read != null && e.getSource() == read.getRead()) {
             handleReadPerson();
-            
+
         } else if (e.getSource() == menu.getDelete()) {
             handleDeleteAction();
-            
+
         } else if (delete != null && e.getSource() == delete.getDelete()) {
             handleDeletePerson();
-            
+
         } else if (e.getSource() == menu.getUpdate()) {
             handleUpdateAction();
-            
+
         } else if (update != null && e.getSource() == update.getRead()) {
             handleReadForUpdate();
-            
+
         } else if (update != null && e.getSource() == update.getUpdate()) {
             handleUpdatePerson();
-            
+
         } else if (e.getSource() == menu.getReadAll()) {
             handleReadAll();
-            
+
         } else if (e.getSource() == menu.getDeleteAll()) {
             handleDeleteAll();
-            
+
         }
-        
-        
+
     }
 
     private void handleDataStorageSelection() {
@@ -168,29 +164,30 @@ public class ControllerImplementation implements IController, ActionListener {
                 setupJPADatabase();
                 break;
         }
-        if(setupLogin()) {
+        if (setupLogin()) {
             setupMenu();
         } else {
-        JOptionPane.showMessageDialog(null, "Log in Cancelled");
-        System.exit(0);
-        }    
+            JOptionPane.showMessageDialog(null, "Log in Cancelled");
+            System.exit(0);
+        }
     }
-    private boolean setupLogin(){
-        
+
+    private boolean setupLogin() {
+
         JFrame fakeMain = new JFrame();
         fakeMain.setUndecorated(true);
         fakeMain.setSize(0, 0);
         fakeMain.setLocationRelativeTo(null);
         fakeMain.setVisible(true);
-        
-        login = new LogIn(fakeMain); 
-        login.setLocationRelativeTo(null); 
-        login.setVisible(true); 
+
+        login = new LogIn(fakeMain);
+        login.setLocationRelativeTo(null);
+        login.setVisible(true);
         fakeMain.dispose();
-        return login.isLoginSuccessful(); 
-        
+        return login.isLoginSuccessful();
+
     }
-    
+
     private void setupFileStorage() {
         File folderPath = new File(Routes.FILE.getFolderPath());
         File folderPhotos = new File(Routes.FILE.getFolderPhotos());
@@ -269,41 +266,41 @@ public class ControllerImplementation implements IController, ActionListener {
         menu.getReadAll().addActionListener(this);
         menu.getDeleteAll().addActionListener(this);
         menu.getCount().addActionListener(this);
-        
+
     }
 
     private void handleInsertAction() {
-        if(loggedUser[2].equalsIgnoreCase("employee")){
+        if (loggedUser[2].equalsIgnoreCase("employee")) {
             JOptionPane.showMessageDialog(menu, "Employees cannot access this option.");
-            
-        }else{
-        insert = new Insert(menu, true);
-        insert.getInsert().addActionListener(this);
-        insert.setVisible(true);
+
+        } else {
+            insert = new Insert(menu, true);
+            insert.getInsert().addActionListener(this);
+            insert.setVisible(true);
         }
     }
 
     private void handleInsertPerson() {
         Pattern pattern = Pattern.compile("^\\+?[0-9]{1,4}?[-.\\s]?\\(?\\d{1,3}\\)?[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,9}$", Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(insert.getphoneNumber().getText());
-        
-        boolean matchFound=matcher.find();
-        
-        if(matchFound){
-            
+
+        boolean matchFound = matcher.find();
+
+        if (matchFound) {
+
             Person p = new Person(insert.getNam().getText(), insert.getNif().getText(), insert.getphoneNumber().getText());
             if (insert.getDateOfBirth().getModel().getValue() != null) {
-            p.setDateOfBirth(((GregorianCalendar) insert.getDateOfBirth().getModel().getValue()).getTime());
-            }   
+                p.setDateOfBirth(((GregorianCalendar) insert.getDateOfBirth().getModel().getValue()).getTime());
+            }
             if (insert.getPhoto().getIcon() != null) {
-            p.setPhoto((ImageIcon) insert.getPhoto().getIcon());
+                p.setPhoto((ImageIcon) insert.getPhoto().getIcon());
             }
             insert(p);
             insert.getReset().doClick();
-        }else{
+        } else {
             JOptionPane.showMessageDialog(insert, "Phone Number not valid. Valid formats: +34 123 456 789, +1-800-555-1234, (123) 456-7890, 123.456.7890 and 123456789.");
         }
-        
+
     }
 
     private void handleReadAction() {
@@ -336,33 +333,51 @@ public class ControllerImplementation implements IController, ActionListener {
     }
 
     public void handleDeleteAction() {
-        if(loggedUser[2].equalsIgnoreCase("employee")){
+        if (loggedUser[2].equalsIgnoreCase("employee")) {
             JOptionPane.showMessageDialog(menu, "Employees cannot access this option.");
-            
-        }else{
-        delete = new Delete(menu, true);
-        delete.getDelete().addActionListener(this);
-        delete.setVisible(true);
+
+        } else {
+            delete = new Delete(menu, true);
+            delete.getDelete().addActionListener(this);
+            delete.setVisible(true);
         }
     }
 
     public void handleDeletePerson() {
         if (delete != null) {
-            Person p = new Person(delete.getNif().getText());
-            delete(p);
-            delete.getReset().doClick();
+            if (delete != null) {
+                Person p = new Person(delete.getNif().getText());
+
+                Person pToDelete = read(p);
+
+                if (pToDelete == null) {
+                    JOptionPane.showMessageDialog(delete, "Person does not exist.", "Warning", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+
+                int confirm = JOptionPane.showConfirmDialog(delete, "Are you sure you want to delete this person?", "WARNING", JOptionPane.YES_NO_OPTION);
+
+                if (confirm == JOptionPane.YES_OPTION) {
+                    
+                    delete(pToDelete); 
+
+                    JOptionPane.showMessageDialog(delete, "Person deleted successfully!", "Message", JOptionPane.INFORMATION_MESSAGE);
+
+                    delete.getReset().doClick();
+                }
+            }
         }
     }
 
     public void handleUpdateAction() {
-        if(loggedUser[2].equalsIgnoreCase("employee")){
+        if (loggedUser[2].equalsIgnoreCase("employee")) {
             JOptionPane.showMessageDialog(menu, "Employees cannot access this option.");
-            
-        }else{
-        update = new Update(menu, true);
-        update.getUpdate().addActionListener(this);
-        update.getRead().addActionListener(this);
-        update.setVisible(true);
+
+        } else {
+            update = new Update(menu, true);
+            update.getUpdate().addActionListener(this);
+            update.getRead().addActionListener(this);
+            update.setVisible(true);
         }
     }
 
@@ -399,29 +414,28 @@ public class ControllerImplementation implements IController, ActionListener {
     public void handleUpdatePerson() {
         Pattern pattern = Pattern.compile("^\\+?[0-9]{1,4}?[-.\\s]?\\(?\\d{1,3}\\)?[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,9}$", Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(update.getPhoneNumber().getText());
-        
-        boolean matchFound=matcher.find();
-        
-        if(matchFound){
-        if (update != null) {
-            Person p = new Person(update.getNam().getText(), update.getNif().getText(), update.getPhoneNumber().getText());
-            if ((update.getDateOfBirth().getModel().getValue()) != null) {
-                p.setDateOfBirth(((GregorianCalendar) update.getDateOfBirth().getModel().getValue()).getTime());
+
+        boolean matchFound = matcher.find();
+
+        if (matchFound) {
+            if (update != null) {
+                Person p = new Person(update.getNam().getText(), update.getNif().getText(), update.getPhoneNumber().getText());
+                if ((update.getDateOfBirth().getModel().getValue()) != null) {
+                    p.setDateOfBirth(((GregorianCalendar) update.getDateOfBirth().getModel().getValue()).getTime());
+                }
+                if ((ImageIcon) (update.getPhoto().getIcon()) != null) {
+                    p.setPhoto((ImageIcon) update.getPhoto().getIcon());
+                }
+                update(p);
+                update.getReset().doClick();
             }
-            if ((ImageIcon) (update.getPhoto().getIcon()) != null) {
-                p.setPhoto((ImageIcon) update.getPhoto().getIcon());
-            }
-            update(p);
-            update.getReset().doClick();
-        }
-        }else{
+        } else {
             JOptionPane.showMessageDialog(insert, "Phone Number not valid. Valid formats: +34 123 456 789, +1-800-555-1234, (123) 456-7890, 123.456.7890 and 123456789.");
         }
     }
-    
+
     public void handleCount() {
-        
-            
+
         try {
             count();
         } catch (Exception ex) {
@@ -433,21 +447,22 @@ public class ControllerImplementation implements IController, ActionListener {
             }
         }
     }
-    public void count(){
-        
+
+    public void count() {
+
         ArrayList<Person> s = readAll();
         int quantity = s.size();
         if (!s.isEmpty()) {
-            
-            count = new Count(menu, true,quantity);
+
+            count = new Count(menu, true, quantity);
             count.setVisible(true);
         } else {
-            
+
             JOptionPane.showMessageDialog(menu, "There are no people registered yet.", "Count - People v1.1.0", JOptionPane.WARNING_MESSAGE);
-            
+
         }
     }
-    
+
     public void handleReadAll() {
         ArrayList<Person> s = readAll();
         if (s.isEmpty()) {
@@ -476,37 +491,34 @@ public class ControllerImplementation implements IController, ActionListener {
     }
 
     public void handleDeleteAll() {
-       if(!loggedUser[2].equalsIgnoreCase("employee")){
-            
-            Object[] options = {"Yes", "No"};
-        //int answer = JOptionPane.showConfirmDialog(menu, "Are you sure to delete all people registered?", "Delete All - People v1.1.0", 0, 0);
-        int answer = JOptionPane.showOptionDialog(
-        menu,
-        "Are you sure you want to delete all registered people?", 
-        "Delete All - People v1.1.0",
-        JOptionPane.YES_NO_OPTION,
-        JOptionPane.WARNING_MESSAGE,
-        null,
-        options,
-        options[1] // Default selection is "No"
-        );
+        if (!loggedUser[2].equalsIgnoreCase("employee")) {
 
-        if (answer == 0) {
-            if(!loggedUser[2].equalsIgnoreCase("employee")){
-            deleteAll();
-            JOptionPane.showMessageDialog(menu , "All persons have been deleted successfully.", "Message", JOptionPane.INFORMATION_MESSAGE);
+            Object[] options = {"Yes", "No"};
+            //int answer = JOptionPane.showConfirmDialog(menu, "Are you sure to delete all people registered?", "Delete All - People v1.1.0", 0, 0);
+            int answer = JOptionPane.showOptionDialog(
+                    menu,
+                    "Are you sure you want to delete all registered people?",
+                    "Delete All - People v1.1.0",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE,
+                    null,
+                    options,
+                    options[1] // Default selection is "No"
+            );
+
+            if (answer == 0) {
+                if (!loggedUser[2].equalsIgnoreCase("employee")) {
+                    deleteAll();
+                    JOptionPane.showMessageDialog(menu, "All persons have been deleted successfully.", "Message", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(menu, "Employees cannot access this option.");
+
+                }
+
+            }
         }
-       else{
-           JOptionPane.showMessageDialog(menu, "Employees cannot access this option.");
-           
-                   
-       }
-       
     }
-       }
-    }
-    
-    
+
     /**
      * This function inserts the Person object with the requested NIF, if it
      * doesn't exist. If there is any access problem with the storage device,

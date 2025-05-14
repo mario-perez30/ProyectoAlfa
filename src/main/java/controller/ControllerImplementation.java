@@ -494,7 +494,7 @@ public class ControllerImplementation implements IController, ActionListener {
         if (answer == 0) {
             if(!loggedUser[2].equalsIgnoreCase("employee")){
             deleteAll();
-            }
+            JOptionPane.showMessageDialog(menu , "All persons have been deleted successfully.", "Message", JOptionPane.INFORMATION_MESSAGE);
         }
        }else{
            JOptionPane.showMessageDialog(menu, "Employees cannot access this option.");

@@ -22,6 +22,7 @@ public class Person implements Serializable{
     private String name;
     private Date dateOfBirth;
     private String phoneNumber;
+    private int postalCode;
     @Transient
     private ImageIcon photo;
     @Lob
@@ -54,6 +55,14 @@ public class Person implements Serializable{
         this.nif = nif;
         this.phoneNumber=phoneNumber;
     }
+    
+    public Person(String name, String nif,String phoneNumber, int postalCode) {
+        this.name = name;
+        this.nif = nif;
+        this.phoneNumber=phoneNumber;
+        this.postalCode = postalCode;
+    }
+    
 
     /**
      * Constructor with all data
@@ -62,16 +71,21 @@ public class Person implements Serializable{
      * @param name
      * @param nif
      * @param dateOfBirth
+     * @param phoneNumber 
+     * @param postalCode 
      * @param photo
      */
-    public Person(String name, String nif, Date dateOfBirth,String phoneNumber, ImageIcon photo) {
+    public Person(String name, String nif, Date dateOfBirth,String phoneNumber, int postalCode, ImageIcon photo) {
         this.name = name;      
         this.nif = nif;
         this.dateOfBirth = dateOfBirth;
         this.phoneNumber=phoneNumber;
+        this.postalCode = postalCode;
         this.photo = photo;
     }
-
+    
+    
+    
     //Getters and Setters
     public String getName() {
         return name;
@@ -105,8 +119,14 @@ public class Person implements Serializable{
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
-    
-    
+
+    public int getPostalCode() {
+        return postalCode;
+    }
+
+    public void setPostalCode(int postalCode) {
+        this.postalCode = postalCode;
+    }
 
     public ImageIcon getPhoto() {
         return photo;

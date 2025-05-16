@@ -65,7 +65,7 @@ public class Insert extends javax.swing.JDialog {
         name.setText("Enter full name");
         nif.setText("Enter NIF number, letter is calculated (e.g., 12345678)");
         phoneNumber.setText("Formats:+34 123 456 789, +1-800-555-1234, 123.456.7890, 123456789.");
-        
+        postalCode.setText("Format: 12345");
         name.setForeground(Color.GRAY);
  
         name.addFocusListener(new FocusListener() {
@@ -125,6 +125,25 @@ public class Insert extends javax.swing.JDialog {
                 }
             }
         });
+        
+        postalCode.setForeground(Color.GRAY);
+                postalCode.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (postalCode.getText().equals("Format: 12345")) {
+                    postalCode.setText("");
+                    postalCode.setForeground(Color.BLACK);
+                }
+            }
+ 
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (postalCode.getText().isEmpty()) {
+                    postalCode.setForeground(Color.GRAY);
+                    postalCode.setText("Format: 12345");
+                }
+            }
+        });
     }
 
     public JButton getReset() {
@@ -147,6 +166,11 @@ public class Insert extends javax.swing.JDialog {
         return phoneNumber;
     }
 
+    public JTextField getPostalCode() {
+        return postalCode;
+    }
+
+    
     public JTextField getNif() {
         return nif;
     }
@@ -174,9 +198,13 @@ public class Insert extends javax.swing.JDialog {
         nif = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
         dateOfBirth = new org.jdatepicker.JDatePicker();
         phoneNumber = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
+        phoneNumber1 = new javax.swing.JTextField();
+        jLabel11 = new javax.swing.JLabel();
+        postalCode = new javax.swing.JTextField();
+        jLabel13 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Insert - People v1.1.0");
@@ -195,10 +223,9 @@ public class Insert extends javax.swing.JDialog {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(12, 12, 12, 12);
+        gridBagConstraints.insets = new java.awt.Insets(19, 24, 0, 0);
         getContentPane().add(insert, gridBagConstraints);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -209,9 +236,9 @@ public class Insert extends javax.swing.JDialog {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.ipadx = 50;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(12, 12, 12, 12);
+        gridBagConstraints.insets = new java.awt.Insets(24, 41, 0, 0);
         getContentPane().add(jLabel1, gridBagConstraints);
 
         name.setMaximumSize(new java.awt.Dimension(400, 22));
@@ -229,9 +256,8 @@ public class Insert extends javax.swing.JDialog {
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(12, 12, 12, 24);
+        gridBagConstraints.insets = new java.awt.Insets(24, 24, 0, 76);
         getContentPane().add(name, gridBagConstraints);
 
         reset.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -247,10 +273,10 @@ public class Insert extends javax.swing.JDialog {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHEAST;
-        gridBagConstraints.insets = new java.awt.Insets(12, 12, 12, 24);
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.ipadx = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(19, 24, 0, 76);
         getContentPane().add(reset, gridBagConstraints);
 
         photo.setBackground(new java.awt.Color(255, 255, 255));
@@ -269,10 +295,11 @@ public class Insert extends javax.swing.JDialog {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridheight = 4;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.gridheight = 5;
+        gridBagConstraints.ipadx = 18;
+        gridBagConstraints.ipady = 65;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(24, 24, 12, 12);
+        gridBagConstraints.insets = new java.awt.Insets(30, 41, 0, 0);
         getContentPane().add(photo, gridBagConstraints);
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -283,9 +310,9 @@ public class Insert extends javax.swing.JDialog {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.ipadx = 50;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(24, 12, 12, 12);
+        gridBagConstraints.insets = new java.awt.Insets(30, 41, 0, 0);
         getContentPane().add(jLabel5, gridBagConstraints);
 
         nif.setMaximumSize(new java.awt.Dimension(400, 22));
@@ -306,9 +333,8 @@ public class Insert extends javax.swing.JDialog {
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(24, 12, 12, 24);
+        gridBagConstraints.insets = new java.awt.Insets(30, 24, 0, 76);
         getContentPane().add(nif, gridBagConstraints);
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -319,9 +345,8 @@ public class Insert extends javax.swing.JDialog {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(12, 12, 12, 12);
+        gridBagConstraints.insets = new java.awt.Insets(24, 41, 0, 0);
         getContentPane().add(jLabel8, gridBagConstraints);
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 2, 8)); // NOI18N
@@ -330,24 +355,12 @@ public class Insert extends javax.swing.JDialog {
         jLabel2.setRequestFocusEnabled(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 6;
         gridBagConstraints.gridwidth = 4;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new java.awt.Insets(12, 24, 12, 24);
-        getContentPane().add(jLabel2, gridBagConstraints);
-
-        jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel9.setText("Phone Number");
-        jLabel9.setMaximumSize(new java.awt.Dimension(150, 22));
-        jLabel9.setMinimumSize(new java.awt.Dimension(150, 22));
-        jLabel9.setPreferredSize(new java.awt.Dimension(150, 22));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.ipadx = 570;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(12, 12, 12, 12);
-        getContentPane().add(jLabel9, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(24, 76, 27, 76);
+        getContentPane().add(jLabel2, gridBagConstraints);
 
         dateOfBirth.setToolTipText("");
         dateOfBirth.setDebugGraphicsOptions(javax.swing.DebugGraphics.NONE_OPTION);
@@ -363,8 +376,9 @@ public class Insert extends javax.swing.JDialog {
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new java.awt.Insets(12, 12, 12, 24);
+        gridBagConstraints.ipadx = 50;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(24, 24, 0, 76);
         getContentPane().add(dateOfBirth, gridBagConstraints);
 
         phoneNumber.setMaximumSize(new java.awt.Dimension(400, 22));
@@ -386,11 +400,94 @@ public class Insert extends javax.swing.JDialog {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(12, 12, 12, 24);
+        gridBagConstraints.insets = new java.awt.Insets(24, 24, 0, 76);
         getContentPane().add(phoneNumber, gridBagConstraints);
+
+        jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel10.setText("Phone Number");
+        jLabel10.setMaximumSize(new java.awt.Dimension(150, 22));
+        jLabel10.setMinimumSize(new java.awt.Dimension(150, 22));
+        jLabel10.setPreferredSize(new java.awt.Dimension(150, 22));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(24, 41, 0, 0);
+        getContentPane().add(jLabel10, gridBagConstraints);
+
+        phoneNumber1.setMaximumSize(new java.awt.Dimension(400, 22));
+        phoneNumber1.setMinimumSize(new java.awt.Dimension(400, 22));
+        phoneNumber1.setPreferredSize(new java.awt.Dimension(400, 22));
+        phoneNumber1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                phoneNumber1ActionPerformed(evt);
+            }
+        });
+        phoneNumber1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                phoneNumber1KeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                phoneNumber1KeyTyped(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(24, 24, 0, 76);
+        getContentPane().add(phoneNumber1, gridBagConstraints);
+
+        jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel11.setText("Phone Number");
+        jLabel11.setMaximumSize(new java.awt.Dimension(150, 22));
+        jLabel11.setMinimumSize(new java.awt.Dimension(150, 22));
+        jLabel11.setPreferredSize(new java.awt.Dimension(150, 22));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(24, 41, 0, 0);
+        getContentPane().add(jLabel11, gridBagConstraints);
+
+        postalCode.setMaximumSize(new java.awt.Dimension(400, 22));
+        postalCode.setMinimumSize(new java.awt.Dimension(400, 22));
+        postalCode.setPreferredSize(new java.awt.Dimension(400, 22));
+        postalCode.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                postalCodeActionPerformed(evt);
+            }
+        });
+        postalCode.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                postalCodeKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                postalCodeKeyTyped(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(18, 24, 0, 76);
+        getContentPane().add(postalCode, gridBagConstraints);
+
+        jLabel13.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel13.setText("Postal code");
+        jLabel13.setMaximumSize(new java.awt.Dimension(150, 22));
+        jLabel13.setMinimumSize(new java.awt.Dimension(150, 22));
+        jLabel13.setPreferredSize(new java.awt.Dimension(150, 22));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(18, 41, 0, 0);
+        getContentPane().add(jLabel13, gridBagConstraints);
 
         pack();
         setLocationRelativeTo(null);
@@ -409,10 +506,12 @@ public class Insert extends javax.swing.JDialog {
         name.setText("Enter full name");
         nif.setText("Enter NIF number, letter is calculated (e.g., 12345678)");
         phoneNumber.setText("Formats:+34 123 456 789, +1-800-555-1234, 123.456.7890, 123456789.");
+        postalCode.setText("Format: 12345");
         
         name.setForeground(Color.GRAY);
         nif.setForeground(Color.GRAY);
         phoneNumber.setForeground(Color.GRAY);
+        postalCode.setForeground(Color.GRAY);
         photo.setIcon(null);
         //We reset the calendar date to the current date ...
         LocalDate dateLocate = LocalDate.now();
@@ -472,16 +571,23 @@ public class Insert extends javax.swing.JDialog {
     private void insertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertActionPerformed
         
         
-        Pattern pattern = Pattern.compile("^\\+?[0-9]{1,4}?[-.\\s]?\\(?\\d{1,3}\\)?[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,9}$", Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(getphoneNumber().getText());
+//       Pattern pattern = Pattern.compile("^\\+?[0-9]{1,4}?[-.\\s]?\\(?\\d{1,3}\\)?[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,9}$", Pattern.CASE_INSENSITIVE);
+//        Matcher matcher1 = pattern.matcher(getphoneNumber().getText());
         
-        boolean matchFound=matcher.find();
+//        Pattern postalCodePattern = Pattern.compile("^\\d{5}$");
+ //       Matcher postalCodeMatcher = postalCodePattern.matcher(getPostalCode().getText());
         
-        if(true){
-            
-        }else{
-            JOptionPane.showMessageDialog(rootPane, "Phone Number not valid. Valid formats: +34 123 456 789, +1-800-555-1234, (123) 456-7890, 123.456.7890 and 123456789.");
-        }
+//        boolean matchFound=matcher1.find();
+//        
+//        if(matchFound){
+//            
+//        }else{
+//            JOptionPane.showMessageDialog(rootPane, "Phone Number not valid. Valid formats: +34 123 456 789, +1-800-555-1234, (123) 456-7890, 123.456.7890 and 123456789.");
+//        }
+        
+
+        
+
         
         
         
@@ -503,18 +609,46 @@ public class Insert extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_phoneNumberActionPerformed
 
+    private void phoneNumber1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_phoneNumber1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_phoneNumber1ActionPerformed
+
+    private void phoneNumber1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_phoneNumber1KeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_phoneNumber1KeyReleased
+
+    private void phoneNumber1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_phoneNumber1KeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_phoneNumber1KeyTyped
+
+    private void postalCodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_postalCodeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_postalCodeActionPerformed
+
+    private void postalCodeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_postalCodeKeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_postalCodeKeyReleased
+
+    private void postalCodeKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_postalCodeKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_postalCodeKeyTyped
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private org.jdatepicker.JDatePicker dateOfBirth;
     private javax.swing.JButton insert;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JTextField name;
     private javax.swing.JTextField nif;
     private javax.swing.JTextField phoneNumber;
+    private javax.swing.JTextField phoneNumber1;
     private javax.swing.JLabel photo;
+    private javax.swing.JTextField postalCode;
     private javax.swing.JButton reset;
     // End of variables declaration//GEN-END:variables
 }

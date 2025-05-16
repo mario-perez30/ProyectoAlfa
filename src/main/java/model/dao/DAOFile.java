@@ -54,7 +54,7 @@ public class DAOFile implements IDAO {
                 if (!data[4].equals("null")) {
                     photo = new ImageIcon(data[4]);
                 }
-                personToRead = new Person(data[0], data[1], date,data[3], photo);
+                personToRead = new Person(data[0], data[1], date,data[3],Integer.parseInt(data[4]), photo);
                 break;
             }
             line = br.readLine();
@@ -83,7 +83,7 @@ public class DAOFile implements IDAO {
             if (!data[4].equals("null")) {
                 photo = new ImageIcon(data[4]);
             }
-            people.add(new Person(data[0], data[1], date,data[3], photo));
+            people.add(new Person(data[0], data[1], date,data[3],Integer.parseInt(data[4]), photo));
             line = br.readLine();
         }
         br.close();
@@ -100,9 +100,9 @@ public class DAOFile implements IDAO {
         if (p.getDateOfBirth() != null) {
             DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
             String dateAsString = dateFormat.format(p.getDateOfBirth());
-            bw.write(p.getName() + "\t" + p.getNif() + "\t" + dateAsString + "\t"+ p.getPhoneNumber() + "\t");
+            bw.write(p.getName() + "\t" + p.getNif() + "\t" + dateAsString + "\t"+ p.getPhoneNumber() + "\t" + p.getPostalCode());
         } else {
-            bw.write(p.getName() + "\t" + p.getNif() + "\t" + "null" + "\t"+ p.getPhoneNumber() + "\t");
+            bw.write(p.getName() + "\t" + p.getNif() + "\t" + "null" + "\t"+ p.getPhoneNumber() + "\t" + p.getPostalCode());
         }
         if (p.getPhoto() != null) {
             FileOutputStream out;

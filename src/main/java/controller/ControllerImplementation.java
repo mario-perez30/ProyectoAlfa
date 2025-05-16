@@ -232,6 +232,7 @@ public class ControllerImplementation implements IController, ActionListener {
                         + "name varchar(50), "
                         + "dateOfBirth DATE, "
                         + "phoneNumber varchar(50), "
+                        + "postalCOde int, "
                         + "photo varchar(200) );");
                 stmt.close();
                 conn.close();
@@ -281,14 +282,17 @@ public class ControllerImplementation implements IController, ActionListener {
     }
 
     private void handleInsertPerson() {
+        String postalText = insert.getPostalCode().getText().trim();
         Pattern pattern = Pattern.compile("^\\+?[0-9]{1,4}?[-.\\s]?\\(?\\d{1,3}\\)?[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,9}$", Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(insert.getphoneNumber().getText());
+        Pattern postalCodePattern = Pattern.compile("^\\d{5}$");
 
+        boolean postalMatchFound = postalCodePattern.matcher(postalText).matches();
         boolean matchFound = matcher.find();
 
-        if (matchFound) {
+        if (matchFound && postalMatchFound) {
 
-            Person p = new Person(insert.getNam().getText(), insert.getNif().getText(), insert.getphoneNumber().getText());
+            Person p = new Person(insert.getNam().getText(), insert.getNif().getText(), insert.getphoneNumber().getText(), Integer.parseInt(insert.getPostalCode().getText()));
             if (insert.getDateOfBirth().getModel().getValue() != null) {
                 p.setDateOfBirth(((GregorianCalendar) insert.getDateOfBirth().getModel().getValue()).getTime());
             }
@@ -298,7 +302,12 @@ public class ControllerImplementation implements IController, ActionListener {
             insert(p);
             insert.getReset().doClick();
         } else {
-            JOptionPane.showMessageDialog(insert, "Phone Number not valid. Valid formats: +34 123 456 789, +1-800-555-1234, (123) 456-7890, 123.456.7890 and 123456789.");
+            if (!postalMatchFound) {
+                JOptionPane.showMessageDialog(insert, "Postal code not valid. Valid format: 12345");
+            }
+            if (!matchFound) {
+                JOptionPane.showMessageDialog(insert, "Phone Number not valid. Valid formats: +34 123 456 789, +1-800-555-1234, (123) 456-7890, 123.456.7890 and 123456789.");
+            }
         }
 
     }
@@ -321,6 +330,7 @@ public class ControllerImplementation implements IController, ActionListener {
                 dateModel.setValue(calendar);
             }
             read.getPhoneNumber().setText(pNew.getPhoneNumber());
+            read.getPostalCode().setText(pNew.getPostalCode() + "");
             //To avoid charging former images
             if (pNew.getPhoto() != null) {
                 pNew.getPhoto().getImage().flush();
@@ -358,8 +368,8 @@ public class ControllerImplementation implements IController, ActionListener {
                 int confirm = JOptionPane.showConfirmDialog(delete, "Are you sure you want to delete this person?", "WARNING", JOptionPane.YES_NO_OPTION);
 
                 if (confirm == JOptionPane.YES_OPTION) {
-                    
-                    delete(pToDelete); 
+
+                    delete(pToDelete);
 
                     JOptionPane.showMessageDialog(delete, "Person deleted successfully!", "Message", JOptionPane.INFORMATION_MESSAGE);
 
@@ -385,14 +395,17 @@ public class ControllerImplementation implements IController, ActionListener {
         if (update != null) {
             Person p = new Person(update.getNif().getText());
             Person pNew = read(p);
+
             if (pNew != null) {
                 update.getNam().setEnabled(true);
                 update.getDateOfBirth().setEnabled(true);
                 update.getPhoneNumber().setEnabled(true);
+                update.getPostalCode().setEnabled(true);
                 update.getPhoto().setEnabled(true);
                 update.getUpdate().setEnabled(true);
                 update.getNam().setText(pNew.getName());
                 update.getPhoneNumber().setText(pNew.getPhoneNumber());
+                update.getPostalCode().setText(pNew.getPostalCode() + "");
                 if (pNew.getDateOfBirth() != null) {
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTime(pNew.getDateOfBirth());
@@ -412,14 +425,19 @@ public class ControllerImplementation implements IController, ActionListener {
     }
 
     public void handleUpdatePerson() {
+        String postalText = update.getPostalCode().getText().trim();
         Pattern pattern = Pattern.compile("^\\+?[0-9]{1,4}?[-.\\s]?\\(?\\d{1,3}\\)?[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,9}$", Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(update.getPhoneNumber().getText());
+        Pattern postalCodePattern = Pattern.compile("^\\d{5}$");
+
+        boolean postalMatchFound = postalCodePattern.matcher(postalText).matches();
 
         boolean matchFound = matcher.find();
 
-        if (matchFound) {
+        if (matchFound && postalMatchFound) {
+            int postalCode = Integer.parseInt(update.getPostalCode().getText());
             if (update != null) {
-                Person p = new Person(update.getNam().getText(), update.getNif().getText(), update.getPhoneNumber().getText());
+                Person p = new Person(update.getNam().getText(), update.getNif().getText(), update.getPhoneNumber().getText(), postalCode);
                 if ((update.getDateOfBirth().getModel().getValue()) != null) {
                     p.setDateOfBirth(((GregorianCalendar) update.getDateOfBirth().getModel().getValue()).getTime());
                 }
@@ -430,7 +448,12 @@ public class ControllerImplementation implements IController, ActionListener {
                 update.getReset().doClick();
             }
         } else {
-            JOptionPane.showMessageDialog(insert, "Phone Number not valid. Valid formats: +34 123 456 789, +1-800-555-1234, (123) 456-7890, 123.456.7890 and 123456789.");
+            if (!postalMatchFound) {
+                JOptionPane.showMessageDialog(update, "Postal code not valid. Valid format: 12345");
+            }
+            if (!matchFound) {
+                JOptionPane.showMessageDialog(update, "Phone Number not valid. Valid formats: +34 123 456 789, +1-800-555-1234, (123) 456-7890, 123.456.7890 and 123456789.");
+            }
         }
     }
 
@@ -480,10 +503,11 @@ public class ControllerImplementation implements IController, ActionListener {
                     model.setValueAt("", i, 2);
                 }
                 model.setValueAt(s.get(i).getPhoneNumber(), i, 3);
+                model.setValueAt(s.get(i).getPostalCode(), i, 4);
                 if (s.get(i).getPhoto() != null) {
-                    model.setValueAt("yes", i, 4);
+                    model.setValueAt("yes", i, 5);
                 } else {
-                    model.setValueAt("no", i, 4);
+                    model.setValueAt("no", i, 5);
                 }
             }
             readAll.setVisible(true);

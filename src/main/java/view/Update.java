@@ -76,6 +76,11 @@ public class Update extends javax.swing.JDialog {
     public JTextField getPhoneNumber() {
         return phoneNumber;
     }
+
+    public JTextField getEmail() {
+        return email;
+    }
+    
     
     public JLabel getPhoto() {
         return photo;
@@ -109,6 +114,8 @@ public class Update extends javax.swing.JDialog {
         phoneNumber = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         postalCode = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        email = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Update - People v1.1.0");
@@ -240,21 +247,21 @@ public class Update extends javax.swing.JDialog {
             }
         });
 
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel6.setText("Email");
+
+        email.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                emailActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(35, 35, 35)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(357, 357, 357)
-                                .addComponent(update, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(24, 24, 24)
-                                .addComponent(reset, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 904, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(23, 23, 23)
                         .addComponent(photo, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -276,9 +283,20 @@ public class Update extends javax.swing.JDialog {
                                         .addComponent(read))
                                     .addComponent(phoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 535, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel6))
                                 .addGap(24, 24, 24)
-                                .addComponent(postalCode, javax.swing.GroupLayout.PREFERRED_SIZE, 535, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(update, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(26, 26, 26)
+                                        .addComponent(reset, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(postalCode, javax.swing.GroupLayout.DEFAULT_SIZE, 535, Short.MAX_VALUE)
+                                    .addComponent(email)))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(35, 35, 35)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 904, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(63, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -315,11 +333,15 @@ public class Update extends javax.swing.JDialog {
                     .addComponent(photo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(email, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(update, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(reset, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(24, 24, 24)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel2)
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addGap(15, 15, 15))
         );
 
         pack();
@@ -356,8 +378,12 @@ public class Update extends javax.swing.JDialog {
         name.setText("");
         phoneNumber.setText("");
         postalCode.setText("");
+        email.setText("");
         dateOfBirth.getModel().setValue(null);
         photo.setIcon(null); 
+        phoneNumber.setEnabled(false);
+        postalCode.setEnabled(false);
+        email.setEnabled(false);
         name.setEnabled(false);
         photo.setEnabled(false);
         //We reset the calendar date to the current date ...
@@ -415,17 +441,23 @@ public class Update extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_postalCodeKeyPressed
 
+    private void emailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_emailActionPerformed
+
     /**
      * @param args the command line arguments
      */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private org.jdatepicker.JDatePicker dateOfBirth;
+    private javax.swing.JTextField email;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JTextField name;
     private javax.swing.JTextField nif;
